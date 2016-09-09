@@ -106,6 +106,7 @@ struct mxcfb_rect {
 #define EPDC_FLAG_USE_ALT_BUFFER		0x100
 #define EPDC_FLAG_TEST_COLLISION		0x200
 #define EPDC_FLAG_GROUP_UPDATE			0x400
+#define EPDC_FLAG_USE_AAD			0x1000
 #define EPDC_FLAG_USE_DITHERING_Y1		0x2000
 #define EPDC_FLAG_USE_DITHERING_Y4		0x4000
 #define EPDC_FLAG_USE_REGAL				0x8000
@@ -156,6 +157,7 @@ struct mxcfb_waveform_modes {
 	int mode_gc8;
 	int mode_gc16;
 	int mode_gc32;
+	int mode_aa;
 };
 
 /*
