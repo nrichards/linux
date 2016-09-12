@@ -3473,8 +3473,9 @@ int mxc_epdc_fb_wait_update_complete(struct mxcfb_update_marker_data *marker_dat
 	/* Free update marker object */
 	kfree(next_marker);
 
-	flush_cache_all();
-	outer_flush_all();
+	/* We can't flush the caches here, interrupts are disabled */
+	/*flush_cache_all();
+	outer_flush_all();*/
 
 	return ret;
 }
@@ -3899,8 +3900,9 @@ static void epdc_aa_work_func(struct work_struct *work)
               /* collect the system time data */
               aa_time_stamp[0] = get_uSecs();
 
-		flush_cache_all();
-		outer_flush_all();
+	      /* We can't flush the caches here, interrupts are disabled */
+		/*flush_cache_all();
+		outer_flush_all();*/
 		if (do_aa_processing_v2_2_1(
 				(uint16_t *)fb_data->working_buffer_A_virt,
 				(uint16_t *)fb_data->working_buffer_B_virt,
@@ -3910,8 +3912,9 @@ static void epdc_aa_work_func(struct work_struct *work)
 			dev_err(fb_data->dev," AAD algorithm is not available in this EPDC driver!\n");
 
 
-		flush_cache_all();
-		outer_flush_all();
+		/* We can't flush the caches here, interrupts are disabled */
+		/*flush_cache_all();
+		outer_flush_all();*/
                /* collect the system time data */
                aa_time_stamp[1] = get_uSecs();
 
@@ -3924,8 +3927,9 @@ static void epdc_aa_work_func(struct work_struct *work)
                 /* collect the system time data */
                 aa_time_stamp[0] = get_uSecs();
 
-		  flush_cache_all();
-		  outer_flush_all();
+		/* We can't flush the caches here, interrupts are disabled */
+		  /*flush_cache_all();
+		  outer_flush_all();*/
 
 		if (do_aad_processing_v2_1_1(
 				(uint16_t *)fb_data->working_buffer_A_virt,
@@ -3935,8 +3939,9 @@ static void epdc_aa_work_func(struct work_struct *work)
 				fb_data->native_height))
 			dev_err(fb_data->dev," AAD algorithm is not available in this EPDC driver!\n");
 
-		  flush_cache_all();
-		  outer_flush_all();
+		/* We can't flush the caches here, interrupts are disabled */
+		  /*flush_cache_all();
+		  outer_flush_all();*/
 
                 /* collect the system time data */
                 aa_time_stamp[1] = get_uSecs();
