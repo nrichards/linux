@@ -407,38 +407,7 @@ static struct fb_videomode es103td1_mode = {
 	.flag   = 0
 };
 
-static struct fb_videomode es103cs1_mode = {
-	.name = "ES103CS1",
-	.refresh = 75,
-	.xres =1872,
-	.yres = 1404,
-	.pixclock = 160000000,
-	.left_margin = 32,
-	.right_margin = 326,
-	.upper_margin = 4,
-	.lower_margin = 12,
-	.hsync_len = 44,
-	.vsync_len = 1,
-	.sync = 0,
-	.vmode = FB_VMODE_NONINTERLACED,
-	.flag = 0,
-};
-
-
 static struct imx_epdc_fb_mode panel_modes[] = {
-	{
-		&es103td1_mode,
-		4,      /* vscan_holdoff */
-		10,     /* sdoed_width */
-		20,     /* sdoed_delay */
-		10,     /* sdoez_width */
-		20,     /* sdoez_delay */
-		1042,    /* gdclk_hp_offs */
-		762,     /* gdsp_offs */
-		0,      /* gdoe_offs */
-		91,      /* gdclk_offs */
-		1,      /* num_ce */
-	},
 	{
 		&es103td1_mode,
 		4,
