@@ -22,13 +22,13 @@
 		reg = <0x80000000 0x20000000>;
 	};
 
-	wifi_pwrseq: wifi_pwrseq {
+	/*wifi_pwrseq: wifi_pwrseq {
 	     compatible = "mmc-pwrseq-simple";
 	     reset-gpios = <&gpio3 30 GPIO_ACTIVE_LOW>,
 		     <&gpio4 0 GPIO_ACTIVE_LOW>;
 	     clocks = <&clks IMX6SL_CLK_OSC>;
 	     clock-names = "ext_clock";
-	};
+	};*/
 
 
 	regulators {
@@ -729,19 +729,20 @@
 	pinctrl-0 = <&pinctrl_usdhc3>;
 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-	mmc-pwrseq = <&wifi_pwrseq>;
+	/*mmc-pwrseq = <&wifi_pwrseq>;*/
 	bus-width = <4>;
-	enable-sdio-wakeup;
+	//enable-sdio-wakeup;
 	non-removable;
 	disable-wp;
 	no-1-8-v;
 	wifi-host;
-	keep-power-in-suspend;
+	//keep-power-in-suspend;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
 		reg = <1>;
-		compatible = "brcm,bcm4329-fmac";
+		/*compatible = "brcm,bcm4329-fmac";*/
+		compatible = "android,bcmdhd_wlan";
 		interrupt-parent = <&gpio4>;
 		interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
 		interrupt-names = "host-wake";

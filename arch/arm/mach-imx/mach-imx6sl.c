@@ -13,11 +13,17 @@
 #include <linux/of_platform.h>
 #include <linux/mfd/syscon.h>
 #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
+#include <linux/gpio.h>
 #include <linux/regmap.h>
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
 
+#define WL_PWR_ON IMX_GPIO_NR(3, 30)
+#define WL_REG_ON IMX_GPIO_NR(4, 0)
+
+
 #include "common.h"
+#include "hardware.h"
 #include "cpuidle.h"
 
 static void __init imx6sl_fec_clk_init(void)
@@ -40,6 +46,38 @@ static inline void imx6sl_fec_init(void)
 	imx6sl_fec_clk_init();
 	imx6_enet_mac_init("fsl,imx6sl-fec", "fsl,imx6sl-ocotp");
 }
+static bool init_wifi_gpio(void)
+{
+	int err;
+
+	err = gpio_request_one(WL_PWR_ON, GPIOF_OUT_INIT_LOW, "wl_pwr_on");
+	if (err) {
+		pr_err("Failed to request power GPIO for wifi: %d\n", err);
+		return false;
+	}
+
+	err = gpio_request_one(WL_REG_ON, GPIOF_OUT_INIT_LOW, "wl_reg_on");
+	if (err) {
+		pr_err("Failed to request regulator GPIO for wifi: %d\n", err);
+		return false;
+	}
+
+	return true;
+}
+
+static void brcmfmac_power_off(void)
+{
+	gpio_set_value(WL_PWR_ON, 0);
+	gpio_set_value(WL_REG_ON, 0);
+}
+
+
+static void brcmfmac_power_on(void)
+{
+	gpio_set_value(WL_PWR_ON, 1);
+	gpio_set_value(WL_REG_ON, 1);
+}
+
 
 static void __init imx6sl_init_late(void)
 {
@@ -59,6 +97,12 @@ static void __init imx6sl_init_machine(void)
 		pr_warn("failed to initialize soc device\n");
 
 	of_platform_populate(NULL, of_default_bus_match_table, NULL, parent);
+
+	if (init_wifi_gpio()) {
+		brcmfmac_power_on();
+	} else {
+		pr_warn("failed to power on wifi\n");
+	}
 
 	imx6sl_fec_init();
 	imx_anatop_init();

@@ -21,7 +21,10 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: wl_iw.h 490106 2014-07-09 12:35:17Z $
+ *
+ * <<Broadcom-WL-IPTag/Open:>>
+ *
+ * $Id: wl_iw.h 514727 2014-11-12 03:02:48Z $
  */
 
 #ifndef _wl_iw_h_
@@ -54,6 +57,8 @@
 #define PNODEBUG_SET_CMD			"PNODEBUG"
 #define TXPOWER_SET_CMD			"TXPOWER"
 
+#define MAC2STR(a) (a)[0], (a)[1], (a)[2], (a)[3], (a)[4], (a)[5]
+#define MACSTR "%02x:%02x:%02x:%02x:%02x:%02x"
 
 /* Structure to keep global parameters */
 typedef struct wl_iw_extra_params {
