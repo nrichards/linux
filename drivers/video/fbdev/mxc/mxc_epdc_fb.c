@@ -2852,13 +2852,13 @@ static void epdc_submit_work_func(struct work_struct *work)
 
 
 
-		if (do_aa_processing_v2_2_0((uint8_t *)(upd_data_list->virt_addr
+		if (1) /*do_aa_processing_v2_2_0((uint8_t *)(upd_data_list->virt_addr
 				+ upd_data_list->update_desc->epdc_offs),
 				&adj_update_region,
 				ALIGN(adj_update_region.width, 8),
 				(uint16_t *)fb_data->working_buffer_A_virt,
 				fb_data->native_width,
-				fb_data->native_height))
+				fb_data->native_height))*/
 			dev_err(fb_data->dev," AAD algorithm is not available in this EPDC driver!\n");
 
 		       /* collect the system time data */
@@ -2875,13 +2875,13 @@ static void epdc_submit_work_func(struct work_struct *work)
 	                /* collect the system time data */
 	                aa_time_stamp[0] = get_uSecs();
 
-		if (do_aad_processing_v2_1_0((uint8_t *)(upd_data_list->virt_addr
+		if (1) /*do_aad_processing_v2_1_0((uint8_t *)(upd_data_list->virt_addr
 				+ upd_data_list->update_desc->epdc_offs),
 				&adj_update_region,
 				ALIGN(adj_update_region.width, 8),
 				(uint16_t *)fb_data->working_buffer_A_virt,
 				fb_data->native_width,
-				fb_data->native_height))
+				fb_data->native_height))*/
 			dev_err(fb_data->dev," AA algorithm is not available in this EPDC driver!\n");
 
 
@@ -3167,7 +3167,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	 *   3) Scheme is Queue or Queue & Merge
 	 */
 	if ((fb_data->waveform_acd_buffer) && (upd_data->waveform_mode < fb_data->waveform_mc) && (upd_data->waveform_mode > 0)) {
-
+#if 0
 		/* prepare the advance algorithm data for this waveform mode and temperature range */
 		algorithmVersion = mxc_epdc_fb_prep_algorithm_data( fb_data->waveform_acd_buffer, 
 			upd_data->waveform_mode /*upd_data_list->update_desc->upd_data.waveform_mode*/,
@@ -3178,6 +3178,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 			0x3);
 		if (algorithmVersion < 0)
 			dev_info  (fb_data->dev, " --- Advance Algorithm Data error: %d ---\n",algorithmVersion);
+#endif
 	}
 
 	/* algorithmVersion = 0 means no advance algorithm for this waveform and/or temperature range
@@ -3191,10 +3192,10 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 			(fb_data->upd_scheme != UPDATE_SCHEME_SNAPSHOT)) ? 1 : 0;
 	}
 	else {
-		upd_desc->is_aa =
-			((upd_data->waveform_mode == fb_data->wv_modes.mode_aa) &&
+		upd_desc->is_aa = 0;
+			/*((upd_data->waveform_mode == fb_data->wv_modes.mode_aa) &&
 			(fb_data->buf_pix_fmt == EPDC_FORMAT_BUF_PIXEL_FORMAT_P5N) &&
-			(fb_data->upd_scheme != UPDATE_SCHEME_SNAPSHOT)) ? 1 : 0;
+			(fb_data->upd_scheme != UPDATE_SCHEME_SNAPSHOT)) ? 1 : 0;*/
 		/* Warn against AA updates w/o AA waveform */
 		if ((upd_data->waveform_mode == fb_data->wv_modes.mode_aa) &&
 			(fb_data->buf_pix_fmt != EPDC_FORMAT_BUF_PIXEL_FORMAT_P5N))
@@ -3902,12 +3903,12 @@ static void epdc_aa_work_func(struct work_struct *work)
 	      /* We can't flush the caches here, interrupts are disabled */
 		/*flush_cache_all();
 		outer_flush_all();*/
-		if (do_aa_processing_v2_2_1(
+		if (1) /*do_aa_processing_v2_2_1(
 				(uint16_t *)fb_data->working_buffer_A_virt,
 				(uint16_t *)fb_data->working_buffer_B_virt,
 				&adj_update_region,
 				fb_data->native_width,
-				fb_data->native_height))
+				fb_data->native_height))*/
 			dev_err(fb_data->dev," AAD algorithm is not available in this EPDC driver!\n");
 
 
@@ -3930,12 +3931,12 @@ static void epdc_aa_work_func(struct work_struct *work)
 		  /*flush_cache_all();
 		  outer_flush_all();*/
 
-		if (do_aad_processing_v2_1_1(
+		if (1) /*do_aad_processing_v2_1_1(
 				(uint16_t *)fb_data->working_buffer_A_virt,
 				(uint16_t *)fb_data->working_buffer_B_virt,
 				&adj_update_region,
 				fb_data->native_width,
-				fb_data->native_height))
+				fb_data->native_height))*/
 			dev_err(fb_data->dev," AAD algorithm is not available in this EPDC driver!\n");
 
 		/* We can't flush the caches here, interrupts are disabled */
@@ -4843,7 +4844,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 	}
 
 	/* get the extra waveform info and display it - This can be removed! It is here for illustration only */
-	if (fb_data->waveform_xwi_buffer) {
+	/*if (fb_data->waveform_xwi_buffer) {
 		char *xwiString;
 		unsigned strLength = mxc_epdc_fb_fetch_wxi_data(fb_data->waveform_xwi_buffer, NULL);
 
@@ -4859,8 +4860,9 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 
 			kfree(xwiString);
 		}
-	}
+	}*/
 	/* fetch and display the voltage control data for waveform mode 0, temp range 0 - This can be removed! It is here for illustration only */
+#if 0
 	if (fb_data->waveform_vcd_buffer) {
 		struct {
 			unsigned version:16;
@@ -4882,6 +4884,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 				vcd.v1, vcd.v2, vcd.v3, vcd.v4, vcd.v5, vcd.v6, vcd.v7 );
 
 	}
+#endif
 
 	/* Allocate memory for waveform data */
 	fb_data->waveform_buffer_virt = dma_alloc_coherent(fb_data->dev,
